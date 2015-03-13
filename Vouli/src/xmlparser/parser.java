@@ -77,6 +77,28 @@ public void loadStopWords() throws FileNotFoundException, IOException{
          }
         }
     }    
+
+
+public void to_lemma(File inputFile)throws UnirestException, IOException { 
+    int FlagName=0;
+    int countsymbol=0;
+    String field = "";
+    DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder dBuilder = null;
+    try { dBuilder = dbFactory.newDocumentBuilder();
+    } catch (ParserConfigurationException ex) { }
+    Document doc = null;
+    try { doc = (Document) dBuilder.parse(inputFile); } 
+    catch (SAXException ex) { } 
+    catch (IOException ex) { } 
+    doc.getDocumentElement().normalize(); 
+    NodeList nList = doc.getElementsByTagName("Speech"); 
+    for (int temp = 0; temp < nList.getLength(); temp++) {
+        Node nNode = nList.item(temp); 
+        Element elm = (Element) nNode;
+        elm.getAttribute("speech");
+         } 
+}
     
 public void sendToElasticSearch(String speaker, String speach, String date,String session, String theme, String title, int i) throws UnirestException, MalformedURLException, IOException{
        
