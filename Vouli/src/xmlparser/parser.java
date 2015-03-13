@@ -11,9 +11,11 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -83,6 +85,19 @@ public void to_lemma(File inputFile)throws UnirestException, IOException {
     int FlagName=0;
     int countsymbol=0;
     String field = "";
+            
+ 
+			
+ 
+    File file = new File("C:\\Users\\User\\Desktop\\laptop\\Zfile.txt");
+
+    
+    if (!file.exists()) {
+            file.createNewFile();
+    }
+
+    FileWriter fw = new FileWriter(file.getAbsoluteFile());
+    BufferedWriter bw = new BufferedWriter(fw);
     DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
     DocumentBuilder dBuilder = null;
     try { dBuilder = dbFactory.newDocumentBuilder();
@@ -96,8 +111,19 @@ public void to_lemma(File inputFile)throws UnirestException, IOException {
     for (int temp = 0; temp < nList.getLength(); temp++) {
         Node nNode = nList.item(temp); 
         Element elm = (Element) nNode;
-        elm.getAttribute("speech");
-         } 
+        
+
+			bw.write(elm.getAttribute("speech"));
+                        bw.write("\n");
+			
+ 
+
+ 
+
+
+		}
+    bw.close();
+         
 }
     
 public void sendToElasticSearch(String speaker, String speach, String date,String session, String theme, String title, int i) throws UnirestException, MalformedURLException, IOException{
