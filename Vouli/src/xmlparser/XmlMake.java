@@ -34,10 +34,10 @@ public class XmlMake {
 
         public XmlMake(){}
 //  Function that creates the xml, over the given format
-	public void makeXml(ArrayList<TNode> list) {
+	public void makeXml(ArrayList<TNode> list, String name) {
                 //Node node= new Node() {};
 	  try {
-              // Ints that are used as flags for any node in order to point existence
+              // Ints that are used as flags for ang y node in order to point existence
                 int Ftheme=0;
                 int Ftopic=0;
                
@@ -59,9 +59,10 @@ public class XmlMake {
 		Element rootElement = doc.createElement("root");
                 session=doc.createAttribute("Session");
                 date= doc.createAttribute("Date");
-                session.setValue(list.get(3).Session);
+              
+                session.setValue(list.get(2).Session);
                 rootElement.setAttributeNode(session);
-                date.setValue(list.get(4).date);
+                date.setValue(list.get(2).date);
                 rootElement.setAttributeNode(date);
 		doc.appendChild(rootElement);
                 
@@ -247,7 +248,7 @@ public class XmlMake {
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		Transformer transformer = transformerFactory.newTransformer();
 		DOMSource source = new DOMSource(doc);
-		StreamResult result = new StreamResult(new File("C:\\Users\\Iasonas\\Desktop\\nikos.xml"));
+		StreamResult result = new StreamResult(new File("/home/iasonas/Desktop/laptop/xmlProcedures/xml"+name+".xml"));
  
 		// Output to console for testing
 		// StreamResult result = new StreamResult(System.out);

@@ -60,7 +60,7 @@ public class parser {
     
 public void loadStopWords() throws FileNotFoundException, IOException{           
        
-        File folder = new File("C:\\Users\\Iasonas\\Documents\\NetBeansProjects\\parser\\stopwords");
+        File folder = new File("/home/iasonas/NetBeansProjects,Parliament/Vouli/Vouli/stopwordsGr.txt");
 
         File[] listOfFiles = folder.listFiles();
 
@@ -89,7 +89,7 @@ public void to_lemma(File inputFile)throws UnirestException, IOException {
  
 			
  
-    File file = new File("C:\\Users\\User\\Desktop\\laptop\\Zfile.txt");
+    File file = new File("/home/iasonas/Desktop/laptop/LemmaInput/LemmaInput"+inputFile.getName());
 
     
     if (!file.exists()) {
@@ -114,6 +114,7 @@ public void to_lemma(File inputFile)throws UnirestException, IOException {
         
 
 			bw.write(elm.getAttribute("speech"));
+                        bw.write("\n");
                         bw.write("\n");
 			
  

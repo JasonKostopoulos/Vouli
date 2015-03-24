@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package vouliparserproject;
+package Vouli;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -68,7 +68,7 @@ public class Input {
       Matcher m;
       
 
-File folder = new File("C:\\Users\\Iasonas\\Desktop\\voulipasertest");
+File folder = new File("/home/iasonas/Desktop/laptop/InputProceduresTxt");
 
 File[] listOfFiles = folder.listFiles();
 
@@ -176,6 +176,7 @@ for (File file : listOfFiles) {
             p = new parser();
             m=p.nomos_ewrhsh_info(line, onoma_omilith);
             if (m.find()) {
+              //  System.out.println("kalispera!");
                 bw.write("\n");
                 bw.write("\n");
                 bw.write(m.group(0)+" _ ");
@@ -341,10 +342,10 @@ for (File file : listOfFiles) {
 //    System.out.println("trexw");
 //    System.out.println(listOfParticipants.get(i).get_name());
 //}
-
-
-
-
+//
+//
+//
+//
 
  //create and use a Java SAX Parser.
 

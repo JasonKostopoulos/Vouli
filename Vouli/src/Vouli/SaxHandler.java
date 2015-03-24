@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package vouliparserproject;
+package Vouli;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package vouliparserproject;
+package Vouli;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
