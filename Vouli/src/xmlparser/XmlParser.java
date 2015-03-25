@@ -15,6 +15,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import java.util.ArrayList;
+import javax.xml.transform.TransformerException;
 
 /**
  *
@@ -25,7 +26,7 @@ public class XmlParser {
 
     private static  File fXmlFile;
     
-   public static void main(String[] args) throws FileNotFoundException, IOException, UnirestException {
+   public static void main(String[] args) throws FileNotFoundException, IOException, UnirestException, TransformerException {
 
          File folder = new File("/home/iasonas/Desktop/laptop/InputProceduresTxt2");
          File[] listOfFiles = folder.listFiles();
@@ -40,29 +41,43 @@ for (File file : listOfFiles) {
         
         InputLine input =new InputLine(file.getAbsolutePath());
         arraynode= input.getline();
+        input.to_lemma( arraynode);
+     //   input.startTagger("/home/iasonas/Desktop/laptop/LemmaInput", "/home/iasonas/NetBeansProjects,Parliament/Vouli/Vouli");
         XmlMake xml= new XmlMake();
         parser p= new parser();
          //p.loadStopWords();
       //  fXmlFile = new File("/home/iasonas/Desktop/laptop/xml_test/testParliament.xml");
         //p.to_lemma(fXmlFile);
         //p.xml_traverse(fXmlFile);
-        for(int i=0; i<arraynode.size()-1;i++){
+        //for(int i=0; i<arraynode.size()-1;i++){
           //  System.out.println(arraynode.get(i).Session);
-        }
+        //}
          xml.makeXml(arraynode, file.getName());
          
-         for(int i=0; i<arraynode.size()-1;i++){
-             System.err.println(i+ arraynode.get(i).name+"  "+ arraynode.get(i).date);
-         }
+//         for(int i=0; i<arraynode.size()-1;i++){
+//             System.out.println(i+ arraynode.get(i).name+"  "+ arraynode.get(i).date);
+//         }
   
     
          }
+    }
+    folder= new File("/home/iasonas/Desktop/laptop/xmlProcedures");
+    listOfFiles = folder.listFiles();
+    for (File file : listOfFiles) {
+       
+    if (file.isFile()) {
+           
+            parser p = new parser();
+ //           p.IntroSet(file);
+    
+        }
+      }
     }
 }
     
     
 
-	}
+	
 
 
 

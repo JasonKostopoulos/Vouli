@@ -29,9 +29,17 @@ import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import static org.w3c.dom.Node.ELEMENT_NODE;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -47,6 +55,9 @@ public class parser {
     String title;
     String theme;
     String session;
+    String type;
+    String omilia= "Nspeech";
+    String eisigisi= "Introspeech"; 
     public parser(){
         hash = new HashSet<>();
         this.date=date;
@@ -55,6 +66,7 @@ public class parser {
         this.title=title;
         this.theme=theme;
         this.session=session;
+        this.type=type;
         
     }
     
@@ -81,51 +93,122 @@ public void loadStopWords() throws FileNotFoundException, IOException{
     }    
 
 
-public void to_lemma(File inputFile)throws UnirestException, IOException { 
-    int FlagName=0;
-    int countsymbol=0;
-    String field = "";
-            
- 
-			
- 
-    File file = new File("/home/iasonas/Desktop/laptop/LemmaInput/LemmaInput"+inputFile.getName());
 
+
+
+//public void IntroSet (File inputFile) throws TransformerConfigurationException, TransformerException{
+//    String Lasttopic= ""; 
+//    int intro=0;
+//     DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+//    DocumentBuilder dBuilder = null;
+//    try { dBuilder = dbFactory.newDocumentBuilder();
+//    } catch (ParserConfigurationException ex) { }
+//    Document doc = null;
+//    try { doc = (Document) dBuilder.parse(inputFile); } 
+//    catch (SAXException ex) { } 
+//    catch (IOException ex) { } 
+//    doc.getDocumentElement().normalize(); 
+//        NodeList dateList= doc.getChildNodes();
+//        for(int j=0; j< dateList.getLength(); j++){
+//            Element dateelm= (Element) dateList.item(j);
+//           // System.out.println(dateelm.getAttribute("Date"));
+//          //  System.out.println(dateelm.getAttribute("Theme"));
+//            NodeList themeList= dateList.item(j).getChildNodes();
+//            System.out.println(themeList.getLength());
+//            for(int th=0; th<themeList.getLength(); th++){
+//               
+//                if(themeList.item(th).getNodeType()== ELEMENT_NODE){
+//                
+//                  Element themeelm= (Element)themeList.item(th);
+//                //  System.out.println(themeelm.getAttribute("Theme"));
+//               // System.out.println(themeelm.getAttribute("Date"));
+//             //    System.out.println(themeelm.getAttribute("theme"));
+//                }
+//                NodeList topicList = themeList.item(th).getChildNodes();
+//                for( int tp=0; tp< topicList.getLength();tp++){
+//                    if(topicList.item(tp).getNodeType()==  ELEMENT_NODE){
+//                  Element topicelm= (Element)topicList.item(tp);
+//                 // System.out.println(topicelm.getAttribute("Topic"));
+//               // System.out.println(themeelm.getAttribute("Date"));
+//                  if(!Lasttopic.equals(topicelm.getAttribute("topic"))){
+//                     Lasttopic=topicelm.getAttribute("topic"); 
+//                     NodeList speakerList= topicList.item(tp).getChildNodes();
+//                     for(int i=0; i<speakerList.getLength(); i++){
+//                          if(speakerList.item(i).getNodeType()==  ELEMENT_NODE){
+//                              Element speakerelm= (Element)speakerList.item(i);
+//                              if(intro==0){
+//                                  
+//                                 speakerelm.setAttribute("type", "introSpeech");
+//                                doc.getChildNodes().item(j).getChildNodes().item(th).getChildNodes().item(tp).replaceChild(speakerelm, doc.getChildNodes().item(j).getChildNodes().item(th).getChildNodes().item(tp).getChildNodes().item(i));
+//                                 System.out.println("eishghsh");
+//                                 intro++;
+//                               }
+//                              else{
+//                                  //System.out.println("normal");
+//                                
+//                                  speakerelm.setAttribute("type", "normalSpeech");
+//                                  doc.getChildNodes().item(j).getChildNodes().item(th).getChildNodes().item(tp).replaceChild(speakerelm, (Element)doc.getChildNodes().item(j).getChildNodes().item(th).getChildNodes().item(tp).getChildNodes().item(i));
+//                              }
+//                              // System.out.println(speakerelm.getAttribute("speaker"));
+//                             // System.out.println(themeelm.getAttribute("Date"));
+//                              }
+//                          }
+//                          
+//                       intro=0;
+//                        }
+//                  else{
+//                       NodeList speakerList= topicList.item(tp).getChildNodes();
+//                     for(int i=0; i<speakerList.getLength(); i++){
+//                          if(speakerList.item(i).getNodeType()==  ELEMENT_NODE){
+//                              Element speakerelm= (Element)speakerList.item(i);
+//
+//                                  speakerelm.setAttribute(type, "normalSpeech");
+//                                  doc.getChildNodes().item(j).getChildNodes().item(th).getChildNodes().item(tp).replaceChild(speakerelm, (Element)doc.getChildNodes().item(j).getChildNodes().item(th).getChildNodes().item(tp).getChildNodes().item(i));
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//      }
+//    }
+//         
+//        
+//    
+//    //System.out.println(nList.getLength());
+//   //System.out.println(nList.item(0).hasAttributes());
+//   // System.out.println(nList.item(0).getChildNodes().item(0).hasAttributes());
+////    NodeList tList = doc.getElementsByTagName("Topic");
+////    NodeList sList = doc.getElementsByTagName("Speaker");
+////   
+////    for (int temp = 0; temp < nList.getLength(); temp++) {
+////        Node nNode = nList.item(temp); 
+////        
+////        Node tNode= tList.item(temp);
+////        Node sNode= sList.item(temp);
+////        Element nelm = (Element) nNode;
+////        Element telm= (Element)  tNode;
+////        Element selm= (Element)  sNode;
+////                
+////                    
+////            // if(nelm.getAttribute("theme").equalsIgnoreCase(" ΝΟΜΟΘΕΤΙΚΗΣ ΕΡΓΑΣΙΑΣ ")){
+////                 //   System.out.println(telm.getAttribute("topic"));
+////                    System.out.println(nelm.getAttribute("theme"));
+////                 //   System.out.println(selm.getAttribute("speaker"));
+////                //}
+//   // }
+//    		TransformerFactory transformerFactory = TransformerFactory.newInstance();
+//		Transformer transformer = transformerFactory.newTransformer();
+//		DOMSource source = new DOMSource(doc);
+//		StreamResult result = new StreamResult(new File("/home/iasonas/Desktop/laptop/xmlProcedures/xml"+inputFile.getName()+".xml"));
+// 
+//		// Output to console for testing
+//		// StreamResult result = new StreamResult(System.out);
+//                //normalize the output so it is produced on different lines
+//               transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+//		transformer.transform(source, result);
+//}
     
-    if (!file.exists()) {
-            file.createNewFile();
-    }
 
-    FileWriter fw = new FileWriter(file.getAbsoluteFile());
-    BufferedWriter bw = new BufferedWriter(fw);
-    DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-    DocumentBuilder dBuilder = null;
-    try { dBuilder = dbFactory.newDocumentBuilder();
-    } catch (ParserConfigurationException ex) { }
-    Document doc = null;
-    try { doc = (Document) dBuilder.parse(inputFile); } 
-    catch (SAXException ex) { } 
-    catch (IOException ex) { } 
-    doc.getDocumentElement().normalize(); 
-    NodeList nList = doc.getElementsByTagName("Speech"); 
-    for (int temp = 0; temp < nList.getLength(); temp++) {
-        Node nNode = nList.item(temp); 
-        Element elm = (Element) nNode;
-        
-
-			bw.write(elm.getAttribute("speech"));
-                        bw.write("\n");
-                        bw.write("\n");
-			
- 
-
- 
-
-
-		}
-    bw.close();
-         
-}
     
 public void sendToElasticSearch(String speaker, String speach, String date,String session, String theme, String title, int i) throws UnirestException, MalformedURLException, IOException{
        
@@ -232,7 +315,7 @@ public void sendToElasticSearch(String speaker, String speach, String date,Strin
                    this.speach= field;
                    this.sendToElasticSearch(this.speaker, this.speach, this.date, this.session, this.theme, this.title,temp);
                   //System.out.println(" "+this.speaker+" "+this.date+" "+this.session+" "+this.theme+" "+this.title+" \n"+this.speach+"\n\n");
-                     
+                       
                }
                 FlagName=0;
                 countsymbol=0;
