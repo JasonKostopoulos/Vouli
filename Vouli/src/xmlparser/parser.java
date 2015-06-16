@@ -72,7 +72,7 @@ public class parser {
     
 public void loadStopWords() throws FileNotFoundException, IOException{           
        
-        File folder = new File("/home/iasonas/NetBeansProjects,Parliament/Vouli/Vouli/stopwordsGr.txt");
+        File folder = new File("/home/iasonas/NetBeansProjects/Vouli/Vouli/stopwordsGr.txt");
 
         File[] listOfFiles = folder.listFiles();
 

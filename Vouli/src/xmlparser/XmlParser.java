@@ -7,13 +7,9 @@
 package xmlparser;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
-
-
 import java.io.File;
 import java.io.FileNotFoundException;
-
 import java.io.IOException;
-
 import java.util.ArrayList;
 import javax.xml.transform.TransformerException;
 
@@ -42,17 +38,21 @@ for (File file : listOfFiles) {
         InputLine input =new InputLine(file.getAbsolutePath());
         arraynode= input.getline();
         input.to_lemma( arraynode);
-     //   input.startTagger("/home/iasonas/Desktop/laptop/LemmaInput", "/home/iasonas/NetBeansProjects,Parliament/Vouli/Vouli");
+       // input.startTagger("/home/iasonas/Desktop/laptop/LemmaInput", "/home/iasonas/NetBeansProjects/Vouli/Vouli");
+        input.from_lemma(arraynode);
         XmlMake xml= new XmlMake();
+        xml.makeXml(arraynode, file.getName());
         parser p= new parser();
-         //p.loadStopWords();
-      //  fXmlFile = new File("/home/iasonas/Desktop/laptop/xml_test/testParliament.xml");
-        //p.to_lemma(fXmlFile);
+      //s  p.loadStopWords();
+        
+        
+        
+       // fXmlFile = new File("/home/iasonas/Desktop/laptop/xml_test/testParliament.xml");
         //p.xml_traverse(fXmlFile);
         //for(int i=0; i<arraynode.size()-1;i++){
           //  System.out.println(arraynode.get(i).Session);
         //}
-         xml.makeXml(arraynode, file.getName());
+         
          
 //         for(int i=0; i<arraynode.size()-1;i++){
 //             System.out.println(i+ arraynode.get(i).name+"  "+ arraynode.get(i).date);

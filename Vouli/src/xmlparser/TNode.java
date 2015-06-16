@@ -18,6 +18,7 @@ public class TNode {
     String Session;
     String theme;
     String speech=" ";
+    String lemmaSpeech= " ";
     String topic;
     public TNode(){
 
@@ -27,6 +28,7 @@ public class TNode {
         this.theme=theme;
         this.speech= speech;
         this.topic= topic;
+        this.lemmaSpeech= lemmaSpeech;
 
         
     }

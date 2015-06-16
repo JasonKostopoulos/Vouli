@@ -17,14 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
+
 
 /**
  *
@@ -127,8 +120,9 @@ public ArrayList<TNode> getline(){
             BufferedWriter bw = new BufferedWriter(fw);
     
             for (int temp = 0; temp < lemmaArray.size(); temp++) { 
-                bw.write("SpeechSample_");
+
                 bw.write(lemmaArray.get(temp).speech);
+                bw.write("\n");
                 bw.write("\n");
                
 
@@ -160,22 +154,43 @@ public ArrayList<TNode> getline(){
         
         
         
-        public ArrayList<TNode> from_lemma(ArrayList<TNode> lemmaArray){
-            
-            File folder = new File("/home/iasonas/Desktop/laptop/InputProceduresTxt2");
+        public ArrayList<TNode> from_lemma(ArrayList<TNode> lemmaArray) throws IOException{
+            int i =0;
+            File folder = new File("/home/iasonas/Desktop/laptop/LemmaInput");
             File[] listOfFiles = folder.listFiles();
 
             for (File file : listOfFiles) {
                 if (file.isFile()) {
 
                     InputLine input =new InputLine(file.getAbsolutePath());
+                    
 
+                    BufferedReader br = null ;
+                    try {
+                        br = new BufferedReader(new FileReader(input.path));
+                    } catch (FileNotFoundException ex) {
+                        Logger.getLogger(InputLine.class.getName()).log(Level.SEVERE, null, ex);
+                    }
 
-
+                    
+                        while ((line = br.readLine()) != null) {
+                            System.out.println(line);
+                            if((line.startsWith("^[Ά-ΏΑ-Ωα-ωά-ώ]+"))){
+                                System.out.println("speech"); 
+                                lemmaArray.get(i).lemmaSpeech=lemmaArray.get(i).lemmaSpeech + line;
+                            }
+                            else{
+                                //System.out.println(lemmaArray.get(i).lemmaSpeech);
+                                System.out.println("newline");
+                                i++;
+                            }
+                        }
+                           
+                        }
                      }
             
             
-                }
+                
                return lemmaArray;
         }
 }
