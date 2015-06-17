@@ -16,10 +16,12 @@ public class TNode {
     String name;
     String date;
     String Session;
-    String theme;
+    String theme= " ";
     String speech=" ";
     String lemmaSpeech= " ";
-    String topic;
+    String topic= " ";
+    double score =0;
+    boolean intro=false ;
     public TNode(){
 
         this.name= name;
@@ -29,7 +31,8 @@ public class TNode {
         this.speech= speech;
         this.topic= topic;
         this.lemmaSpeech= lemmaSpeech;
-
+        this.intro=intro;
+        this.score=score;
         
     }
     

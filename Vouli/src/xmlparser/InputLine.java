@@ -14,6 +14,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,14 +35,17 @@ public class InputLine {
     }
     ArrayList<TNode> arraynode= new ArrayList();
     TNode node= new TNode();
+    TNode previous = new TNode();
        
     String line;
     String NameReg[];
 
 
 public ArrayList<TNode> getline(){
-//read each txt line by line and write it on a new txt after parse with the acronym Parsed on the beggining of its name
-
+// populate ArrayList, read parsed txt line by line and split headers for the metadata.
+// also calculates whether  a speaker has an introductory  role or not
+        int flagint=0;
+        int introd=0;
         BufferedReader br = null ;
         try {
             br = new BufferedReader(new FileReader(path));
@@ -89,27 +94,42 @@ public ArrayList<TNode> getline(){
                 }
                 if(line.isEmpty()){
                     arraynode.add(node);
+                    if(!(node.topic.equalsIgnoreCase(previous.topic))){
+                        flagint=1;
+                    }
+                        
+                        if(node.speech.length()>2000 && flagint==1){
+                            flagint=0;
+                            introd++;
+                            node.intro= true;
+                    
+                        }
+                    
+                    previous= node;
                     node= new TNode();
 
                 }
                 
                 
             }
+           // System.out.println(introd);
         } catch (IOException ex) {
             Logger.getLogger(InputLine.class.getName()).log(Level.SEVERE, null, ex);
         }
         return arraynode;
         }
 
-        public void to_lemma(ArrayList<TNode> lemmaArray)throws UnirestException, IOException { 
+public void to_lemma(ArrayList<TNode> lemmaArray)throws UnirestException, IOException { 
+    // creates a new set of txt files only with the speeches separated by new lines for the input of the tagger
             int FlagName=0;
             int countsymbol=0;
             String field = "";
+            
 
 
 
       if(lemmaArray.size()>0){     
-            File file = new File("/home/iasonas/Desktop/laptop/LemmaInput/LemmaInput _"+lemmaArray.get((lemmaArray.size()-1)).date);
+            File file = new File("/home/iasonas/Desktop/laptop/LemmaInput/LemmaInput_"+this.path.split("/")[this.path.split("/").length-1]);
 
 
             if (!file.exists()) {
@@ -135,64 +155,48 @@ public ArrayList<TNode> getline(){
         
         
         
-        public void startTagger(String docs, String tagger)
-        {
-            
-            if(tagger.charAt(tagger.length()-1)!='/') tagger=tagger+"/"; 
-            if(docs.charAt(docs.length()-1)!='/') docs=docs+"/";
-            String cmd = "java -jar "+tagger+"ilsp-nlp-asclient-1.1.5.jar " + "-b tcp://snf-228373.vm.okeanos.grnet.gr:61616 " + "-e ilsp-lemmatizer-aggregate-queue " + "-id "+docs+" -ot xceslemma -s .txt -a .xml";
-            System.out.println("Exectunig: "+cmd);
-            Process runtime;
-            try {
-                runtime = Runtime.getRuntime().exec(cmd);
-            int processComplete = runtime.waitFor();
-            } catch (IOException | InterruptedException ex) {
-                Logger.getLogger(InputLine.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+ void startTagger(String tagger, String docs){
+        
+        if(tagger.charAt(tagger.length()-1)!='/')
+            tagger=tagger+"/";
+        
+        if(docs.charAt(docs.length()-1)!='/')
+            docs=docs+"/";
 
         
+        System.out.println("Starting ilsp tagger..");
         
+        String cmd = "java -jar "+tagger+"ilsp-nlp-asclient-1.1.5.jar  " +
+                    "-b tcp://snf-228375.vm.okeanos.grnet.gr:61616 " +
+                    "-e  ilsp-lemmatizer-aggregate-queue " +
+                    "-id "+docs+" -ot xceslemma -s .txt -a .xml";
         
-        public ArrayList<TNode> from_lemma(ArrayList<TNode> lemmaArray) throws IOException{
-            int i =0;
-            File folder = new File("/home/iasonas/Desktop/laptop/LemmaInput");
-            File[] listOfFiles = folder.listFiles();
-
-            for (File file : listOfFiles) {
-                if (file.isFile()) {
-
-                    InputLine input =new InputLine(file.getAbsolutePath());
-                    
-
-                    BufferedReader br = null ;
-                    try {
-                        br = new BufferedReader(new FileReader(input.path));
-                    } catch (FileNotFoundException ex) {
-                        Logger.getLogger(InputLine.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                    
-                        while ((line = br.readLine()) != null) {
-                            System.out.println(line);
-                            if((line.startsWith("^[Ά-ΏΑ-Ωα-ωά-ώ]+"))){
-                                System.out.println("speech"); 
-                                lemmaArray.get(i).lemmaSpeech=lemmaArray.get(i).lemmaSpeech + line;
-                            }
-                            else{
-                                //System.out.println(lemmaArray.get(i).lemmaSpeech);
-                                System.out.println("newline");
-                                i++;
-                            }
-                        }
-                           
-                        }
-                     }
-            
-            
+        System.out.println("Execunig: "+cmd);
                 
-               return lemmaArray;
+        Process runtime;
+        try {
+            
+            runtime = Runtime.getRuntime().exec(cmd);
+            
+            InputStream stdin = runtime.getInputStream();
+            InputStreamReader isr = new InputStreamReader(stdin);
+            BufferedReader br = new BufferedReader(isr);
+            
+            String line;
+
+            while ( (line = br.readLine()) != null)
+                System.out.println(line);
+            
+            int processComplete = runtime.waitFor();
+            
+            System.out.println("Done tagging .txt files!");
+            
+        } catch (IOException | InterruptedException ex) {
+            System.err.println("Abort!");
+            Logger.getLogger(InputLine.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }   
+        
 }
         
 

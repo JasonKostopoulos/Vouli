@@ -96,7 +96,7 @@ public class Law {
     }
     
     
-    public Speech search_speech (String value){// ΠΡΟΣΘΗΚΗ ΛΙΣΤΑΣ ΓΙΑ ΠΟΛΛΕΣ ΤΟΠΟΘΕΤΗΣΕΙΣ ΑΠΟ ΕΝΑΝ ΟΜΙΛΗΤΗ ΤΩΡΑ RETURNS FIRST
+    public Speech search_speech (String value){
         if(!this.speech.isEmpty()){
             for( int i=0;i<this.speech.size();i++){
                 if (this.speech.get(i).get_speaker().get_name().equals(value)){

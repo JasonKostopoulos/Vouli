@@ -7,7 +7,7 @@
 package xmlparser;
 
 
-import com.mashape.unirest.http.JsonNode;
+
 import java.io.File;
 import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
@@ -24,7 +24,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
+
 /**
  *
  * @author Iasonas
@@ -52,6 +52,8 @@ public class XmlMake {
                             Attr theme = null;
                             Attr topic = null;
                             Attr speech =  null; 
+                            Attr intro = null;
+                            Attr score = null;
                             Attr type= null;
 
 
@@ -118,6 +120,7 @@ public class XmlMake {
                                                             Element toElement= (Element) tonode;
                                                             // if  the topic node is the same to the list element topic
                                                             if(toElement.getAttribute("topic").equals(list.get(i).topic)){
+                                                                
                                                               // test list topic information
                                                              //   System.out.println(list.get(i).topic);
 
@@ -132,41 +135,56 @@ public class XmlMake {
                                                                         Element omilitis =doc.createElement("Speaker");
 
                                                                         omilitis.setAttribute("speaker", list.get(i).name);
-                                                                        if(list.get(i).speech.length()>400 && Intro==0){
-
+                                                                        if (list.get(i).intro){
                                                                             omilitis.setAttribute("type", "introductory");
-                                                                            Intro=1;
-            //                                                           }
                                                                         }
                                                                         else{
-                                                                             omilitis.setAttribute("type", "normal");
-
-                                                                                    }   
+                                                                            omilitis.setAttribute("type", "normal");
+                                                                        }
+//                                                                        if(list.get(i).speech.length()>20000 && Intro==0){
+//
+//                                                                            omilitis.setAttribute("type", "introductory");
+//                                                                            Intro=1;
+//            //                                                           }
+//                                                                        }
+//                                                                        else{
+//                                                                             omilitis.setAttribute("type", "normal");
+//
+//                                                                                    }   
 
                                                                           //System.out.println(list.get(i).speaker);
             //                                                            System.out.println(list.get(i).speech);
                                                                         toElement.appendChild(omilitis);
                                                                         Element dspeech= doc.createElement("Speech");
+                                                                        dspeech.setAttribute("score", list.get(i).score+"");
                                                                         dspeech.setAttribute("speech", list.get(i).speech);
                                                                         omilitis.appendChild(dspeech);
 
                                                                 }
                                                                 // if topic has no child nodes append the first child and the speech with it
                                                                 else{
+                                                                    Intro=0;
                                                                     Element omilitis =doc.createElement("Speaker");
                                                                     omilitis.setAttribute("speaker", list.get(i).name);
-                                                                    if(list.get(i).speech.length()>400 && Intro==0){
-
+                                                                    if (list.get(i).intro){
                                                                             omilitis.setAttribute("type", "introductory");
-                                                                            Intro=1;
-            //                                                           }
                                                                         }
                                                                         else{
-                                                                             omilitis.setAttribute("type", "normal");
-
-                                                                                    }  
+                                                                            omilitis.setAttribute("type", "normal");
+                                                                        }
+//                                                                    if(list.get(i).speech.length()>2000 && Intro==0){
+//
+//                                                                            omilitis.setAttribute("type", "introductory");
+//                                                                            Intro=1;
+//            //                                                           }
+//                                                                        }
+//                                                                        else{
+//                                                                             omilitis.setAttribute("type", "normal");
+//
+//                                                                                    }  
                                                                     toElement.appendChild(omilitis);
                                                                     Element dspeech= doc.createElement("Speech");
+                                                                    dspeech.setAttribute("score", list.get(i).score+"");
                                                                     dspeech.setAttribute("speech", list.get(i).speech);
                                                                     omilitis.appendChild(dspeech);
 
@@ -185,18 +203,25 @@ public class XmlMake {
                                                             thElement.appendChild(etopic);
                                                             Element omilitis =doc.createElement("Speaker");
                                                             omilitis.setAttribute("speaker", list.get(i).name);
-                                                             if(list.get(i).speech.length()>400 && Intro==0){
-
+                                                            if (list.get(i).intro){
                                                                             omilitis.setAttribute("type", "introductory");
-                                                                            Intro=1;
-            //                                                           }
                                                                         }
                                                                         else{
-                                                                             omilitis.setAttribute("type", "normal");
-
-                                                                                    }  
+                                                                            omilitis.setAttribute("type", "normal");
+                                                                        }
+//                                                             if(list.get(i).speech.length()>2000 && Intro==0){
+//
+//                                                                            omilitis.setAttribute("type", "introductory");
+//                                                                            Intro=1;
+//            //                                                           }
+//                                                                        }
+//                                                                        else{
+//                                                                             omilitis.setAttribute("type", "normal");
+//
+//                                                                                    }  
                                                             etopic.appendChild(omilitis);
                                                             Element dspeech= doc.createElement("Speech");
+                                                            dspeech.setAttribute("score", list.get(i).score+"");
                                                             dspeech.setAttribute("speech", list.get(i).speech);
                                                             omilitis.appendChild(dspeech);
                                                         }
@@ -210,18 +235,25 @@ public class XmlMake {
                                                             Intro=0;
                                                             Element omilitis =doc.createElement("Speaker");
                                                             omilitis.setAttribute("speaker", list.get(i).name);
-                                                             if(list.get(i).speech.length()>400 && Intro==0){
-
+                                                            if (list.get(i).intro){
                                                                             omilitis.setAttribute("type", "introductory");
-                                                                            Intro=1;
-            //                                                           }
                                                                         }
                                                                         else{
-                                                                             omilitis.setAttribute("type", "normal");
-
-                                                                                    }  
+                                                                            omilitis.setAttribute("type", "normal");
+                                                                        }
+//                                                             if(list.get(i).speech.length()>2000 && Intro==0){
+//
+//                                                                            omilitis.setAttribute("type", "introductory");
+//                                                                            Intro=1;
+//            //                                                           }
+//                                                                        }
+//                                                                        else{
+//                                                                             omilitis.setAttribute("type", "normal");
+//
+//                                                                                    }  
                                                             etopic.appendChild(omilitis);
                                                             Element dspeech= doc.createElement("Speech");
+                                                            dspeech.setAttribute("score", list.get(i).score+"");
                                                             dspeech.setAttribute("speech", list.get(i).speech);
                                                             omilitis.appendChild(dspeech);
                                                     }
@@ -242,18 +274,25 @@ public class XmlMake {
                                             Intro=0;
                                             Element omilitis =doc.createElement("Speaker");
                                             omilitis.setAttribute("speaker", list.get(i).name);
-                                             if(list.get(i).speech.length()>400 && Intro==0){
-
-                                                                            omilitis.setAttribute("type", "introductory");
-                                                                            Intro=1;
-            //                                                           }
-                                                                        }
-                                             else{
-                                                                             omilitis.setAttribute("type", "normal");
-
-                                                                                    }  
+                                            if (list.get(i).intro){
+                                                omilitis.setAttribute("type", "introductory");
+                                            }
+                                            else{
+                                                omilitis.setAttribute("type", "normal");
+                                            }
+//                                             if(list.get(i).speech.length()>2000&& Intro==0){
+//
+//                                            omilitis.setAttribute("type", "introductory");
+//                                            Intro=1;
+////                                                           }
+//                                        }
+//                                               else{
+//                                             omilitis.setAttribute("type", "normal");
+//
+//                                                    }  
                                             etopic.appendChild(omilitis);
                                             Element dspeech= doc.createElement("Speech");
+                                            dspeech.setAttribute("score", list.get(i).score+"");
                                             dspeech.setAttribute("speech", list.get(i).speech);
                                             omilitis.appendChild(dspeech);
                                             }
@@ -271,22 +310,29 @@ public class XmlMake {
                                             Intro=0;
                                             Element omilitis =doc.createElement("Speaker");
                                             omilitis.setAttribute("speaker", list.get(i).name);
-                                              if(list.get(i).speech.length()>400 && Intro==0){
-
-                                                                            omilitis.setAttribute("type", "introductory");
-                                                                            Intro=1;
-            //                                                           }
-                                                                        }
-                                                                        else{
-                                                                             omilitis.setAttribute("type", "normal");
-
-                                                                                    }  
+                                            if (list.get(i).intro){
+                                                omilitis.setAttribute("type", "introductory");
+                                            }
+                                            else{
+                                                omilitis.setAttribute("type", "normal");
+                                            }
+//                                              if(list.get(i).speech.length()>2000 && Intro==0){
+//
+//                                                omilitis.setAttribute("type", "introductory");
+//                                                Intro=1;
+////                                                           }
+//                                            }
+//                                            else{
+//                                                 omilitis.setAttribute("type", "normal");
+//
+//                                                        }  
                                             etopic.appendChild(omilitis);
                                             Element dspeech= doc.createElement("Speech");
+                                            dspeech.setAttribute("score", list.get(i).score+"");
                                             dspeech.setAttribute("speech", list.get(i).speech);
                                             omilitis.appendChild(dspeech);
                                         }
-                                      //  Intro=0;
+                                        Intro=0;
                                 }
                                 }
                             }
