@@ -70,13 +70,88 @@ public void setScore(ArrayList<TNode> array) throws UnirestException, IOExceptio
     for ( int i = 0; i < array.size();i++){
 
         
-String query = "{\"facets\":{\"terms\":{\"terms\":{\"field\":\"_type\",\"size\":100,\"order\":\"count\",\"exclude\":[]},\"facet_filter"
-                + "\":{\"fquery\":{\"query\":{\"filtered\":{\"query\":{\"bool\":{\"should\":[{\"query_string\":{\""
-                + "query\":\""+array.get(i).speech+"\"}}]}},\"filter\":{\"bool\":{\"must\":[{\"fquery\":{\"query\":{\"query_string\":{\"query\":\""
-                + "session:(\\\""+array.get(i).Session+"\\\")\"}},\"_cache\":true}},{\"fquery\":{\"query\":{\"query_string\":{\"query\":\""
-                + "date:(\\\""+array.get(i).date+"\\\")\"}},\"_cache\":true}},{\"fquery\":{\"query\":{\"query_string\":{\"query\":\""
-                + "title:(\\\""+array.get(i).topic+"\\\")\"}},\"_cache\":true}},{\"fquery\":{\"query\":{\"query_string\":{\"query\":\""
-                + "intro:(\\\"true\\\")\"}},\"_cache\":true}}]}}}}}}}},\"size\":0}";
+String query = "{\n" +
+                        "  \"query\": {\n" +
+                        "    \"filtered\": {\n" +
+                        "      \"query\": {\n" +
+                        "        \"bool\": {\n" +
+                        "          \"should\": [\n" +
+                        "            {\n" +
+                        "              \"query_string\": {\n" +
+                        "                \"query\": \""+array.get(i).speech+"\"\n" +
+                        "              }\n" +
+                        "            }\n" +
+                        "          ]\n" +
+                        "        }\n" +
+                        "      },\n" +
+                        "      \"filter\": {\n" +
+                        "        \"bool\": {\n" +
+                        "          \"must\": [\n" +
+                        "            {\n" +
+                        "              \"fquery\": {\n" +
+                        "                \"query\": {\n" +
+                        "                  \"query_string\": {\n" +
+                        "                    \"query\": \"intro:(\\\"true\\\")\"\n" +
+                        "                  }\n" +
+                        "                },\n" +
+                        "                \"_cache\": true\n" +
+                        "              }\n" +
+                        "            },\n" +
+                        "            {\n" +
+                        "              \"fquery\": {\n" +
+                        "                \"query\": {\n" +
+                        "                  \"query_string\": {\n" +
+                        "                    \"query\": \"date:(\\\""+array.get(i).date+"\\\")\"\n" +
+                        "                  }\n" +
+                        "                },\n" +
+                        "                \"_cache\": true\n" +
+                        "              }\n" +
+                        "            },\n" +
+                        "            {\n" +
+                        "              \"fquery\": {\n" +
+                        "                \"query\": {\n" +
+                        "                  \"query_string\": {\n" +
+                        "                    \"query\": \"session:(\\\""+array.get(i).Session+"\\\")\"\n" +
+                        "                  }\n" +
+                        "                },\n" +
+                        "                \"_cache\": true\n" +
+                        "              }\n" +
+                        "            },\n" +
+                        "            {\n" +
+                        "              \"fquery\": {\n" +
+                        "                \"query\": {\n" +
+                        "                  \"query_string\": {\n" +
+                        "                    \"query\": \"title:(\\\""+array.get(i).topic+"\\\")\"\n" +
+                        "                  }\n" +
+                        "                },\n" +
+                        "                \"_cache\": true\n" +
+                        "              }\n" +
+                        "            }\n" +
+                        "          ]\n" +
+                        "        }\n" +
+                        "      }\n" +
+                        "    }\n" +
+                        "  },\n" +
+                        "  \"highlight\": {\n" +
+                        "    \"fields\": {},\n" +
+                        "    \"fragment_size\": 2147483647,\n" +
+                        "    \"pre_tags\": [\n" +
+                        "      \"@start-highlight@\"\n" +
+                        "    ],\n" +
+                        "    \"post_tags\": [\n" +
+                        "      \"@end-highlight@\"\n" +
+                        "    ]\n" +
+                        "  },\n" +
+                        "  \"size\": 500,\n" +
+                        "  \"sort\": [\n" +
+                        "    {\n" +
+                        "      \"_score\": {\n" +
+                        "        \"order\": \"desc\",\n" +
+                        "        \"ignore_unmapped\": true\n" +
+                        "      }\n" +
+                        "    }\n" +
+                        "  ]\n" +
+                        "}";
      
                 array.get(i).score= p.executeQuery(query);
 
@@ -115,7 +190,7 @@ public void sendToElasticSearch(String speaker, String speach, String date,Strin
                                      InputStreamReader(conn.getInputStream()));
             
             while ((line = in.readLine()) != null) {
-                System.out.println(line);
+              //  System.out.println(line);
             }
             in.close();
             
@@ -162,7 +237,7 @@ private double executeQuery(String query){
                 score = 0.0;
             }
             
-            System.out.println(score);
+      //      System.out.println(score);
             
             in.close();
         } catch (IOException | JSONException e) {
