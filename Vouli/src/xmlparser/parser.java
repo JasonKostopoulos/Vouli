@@ -23,6 +23,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,14 +43,9 @@ public class parser {
     
 public void loadStopWords() throws FileNotFoundException, IOException{           
        // loads a set of stopwords on parser that can be used to clear the input speeches on ElasticSearch 
-        File folder = new File("/home/iasonas/NetBeansProjects/Vouli/Vouli/stopwordsGr.txt");
-
-        File[] listOfFiles = folder.listFiles();
+        File file = new File("/home/iasonas/NetBeansProjects/Vouli/Vouli/stopwordsGr.txt");
 
 
-
-        
-        for (File file : listOfFiles) {
             if (file.isFile()) {
                 BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()));
                 String line;
@@ -57,9 +53,29 @@ public void loadStopWords() throws FileNotFoundException, IOException{
                this.hash.add(line);
              }
          }
-        }
+        
     }    
 
+public void filterstopWords(ArrayList<TNode> array) {
+    String filter;
+    String stop;
+    int index;
+    for ( int i = 0; i < array.size();i++){
+        filter =array.get(i).speech;
+        Iterator<String> itr = this.hash.iterator();
+        while(itr.hasNext()){
+            stop =itr.next();
+            stop = " "+stop+" ";
+            filter= filter.replace(stop, " ");
+            
+            }
+        array.get(i).lemmaSpeech = filter;
+        System.out.println(filter);
+            
+        }
+    
+    
+}
 
 
 
@@ -78,7 +94,7 @@ String query = "{\n" +
                         "          \"should\": [\n" +
                         "            {\n" +
                         "              \"query_string\": {\n" +
-                        "                \"query\": \""+array.get(i).speech+"\"\n" +
+                        "                \"query\": \""+array.get(i).lemmaSpeech+"\"\n" +
                         "              }\n" +
                         "            }\n" +
                         "          ]\n" +

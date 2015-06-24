@@ -41,7 +41,8 @@ for (File file : listOfFiles) {
         arraynode= input.getline();
         input.to_lemma( arraynode);
         
-      //  p.loadStopWords();       
+        p.loadStopWords();  
+        p.filterstopWords(arraynode);
        
          id = p.elasticSearch(arraynode, id);
 
@@ -50,7 +51,7 @@ for (File file : listOfFiles) {
 
     for (File file : listOfFiles) {
     if (file.isFile()) {
-       input =new InputLine(file.getAbsolutePath());
+      input =new InputLine(file.getAbsolutePath());
        arraynode= input.getline();
        p.setScore(arraynode);
        XmlMake xml= new XmlMake();
