@@ -41,7 +41,7 @@ for (File file : listOfFiles) {
         arraynode= input.getline();
         input.to_lemma( arraynode);
         
-        p.loadStopWords();       
+      //  p.loadStopWords();       
        
          id = p.elasticSearch(arraynode, id);
 
