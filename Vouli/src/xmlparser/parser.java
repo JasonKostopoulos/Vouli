@@ -56,12 +56,12 @@ public void loadStopWords() throws FileNotFoundException, IOException{
         
     }    
 
-public void filterstopWords(ArrayList<TNode> array) {
+public ArrayList<TNode>  filterstopWords(ArrayList<TNode> array) {
     String filter;
     String stop;
     int index;
     for ( int i = 0; i < array.size();i++){
-        filter =array.get(i).speech;
+        filter =array.get(i).lemmaSpeech;
         Iterator<String> itr = this.hash.iterator();
         while(itr.hasNext()){
             stop =itr.next();
@@ -70,11 +70,10 @@ public void filterstopWords(ArrayList<TNode> array) {
             
             }
         array.get(i).lemmaSpeech = filter;
-        System.out.println(filter);
-            
+           
         }
     
-    
+    return array;
 }
 
 
@@ -180,7 +179,7 @@ public int elasticSearch(ArrayList<TNode> array, int id) throws UnirestException
     // sends each  node of the Tnode arraylist to elasticSearch
     parser p= new parser();
     for ( int i = 0; i < array.size();i++){
-        p.sendToElasticSearch(array.get(i).name, array.get(i).speech, array.get(i).date, array.get(i).Session, array.get(i).theme,array.get(i).topic, array.get(i).intro,id);
+        p.sendToElasticSearch(array.get(i).name, array.get(i).lemmaSpeech, array.get(i).date, array.get(i).Session, array.get(i).theme,array.get(i).topic, array.get(i).intro,id);
         id++;
     }
     return id;
